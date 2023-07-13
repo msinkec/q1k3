@@ -2,8 +2,9 @@
 let
 map,
 map_size = 128,
+	
 
-map_load_container = async (path) => {
+map_load_container = async (data) => {
 	/* Parse map container format
 		typedef struct {
 			u8 x, y, z;
@@ -32,8 +33,7 @@ map_load_container = async (path) => {
 		the texture index to use for the following blocks.
 	*/
 
-	let data = new Uint8Array(await (await fetch(path)).arrayBuffer()),
-		maps = [];
+	let maps = [];
 	for (let i = 0; i < data.length;) {
 		let blocks_size = data[i++] | (data[i++] << 8),
 			cm = new Uint8Array(map_size * map_size * map_size >> 3), // collision map

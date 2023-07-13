@@ -57,6 +57,26 @@ sfx_nailgun_hit,
 sfx_grenade_shoot,
 sfx_grenade_bounce,
 sfx_grenade_explode,
+	
+
+mapsB64 = `
+###MAPS64_PLACEHOLDER###
+`,
+
+modelsB64 = `
+###MODELS64_PLACEHOLDER###
+`,
+	
+base64ToUint8Array = (base64String) => {
+  const binaryString = atob(base64String);
+  const buffer = new ArrayBuffer(binaryString.length);
+  const bufferView = new Uint8Array(buffer);
+  for (let i = 0; i < binaryString.length; i++) {
+    bufferView[i] = binaryString.charCodeAt(i);
+  }
+  return bufferView;
+},
+
 
 game_load = async () => {
 	r_init();
@@ -65,8 +85,8 @@ game_load = async () => {
 	ttt(texture_data).map(r_create_texture);
 	
 	// Load map & model containers	
-	map_data = await map_load_container(/*DEBUG[*/ 'build/' + /*]*/ 'l');
-	model_data = await model_load_container(/*DEBUG[*/ 'build/' + /*]*/ 'm');
+	map_data = await map_load_container(base64ToUint8Array(mapsB64));
+	model_data = await model_load_container(base64ToUint8Array(modelsB64));
 
 	// Create models. Many models share the same geometry just with different
 	// sizes and textures.

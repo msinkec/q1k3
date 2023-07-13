@@ -100,6 +100,14 @@ cat \
 # Compress WebGL calls, remove DEBUG[...]
 php pack_js.php build/game.js > build/game.packed.js
 
+# Convert maps and models into base64 text.
+base64 -w 0 build/l > build/l.txt
+base64 -w 0 build/m > build/m.txt
+
+# Bake maps and models into the game source itself.
+sed -i "s|###MAPS64_PLACEHOLDER###|$(cat build/l.txt)|g" build/game.packed.js
+sed -i "s|###MODELS64_PLACEHOLDER###|$(cat build/m.txt)|g" build/game.packed.js
+
 # Uglify JS
 npx uglify-js build/game.packed.js \
 	--compress --mangle toplevel -c --beautify --mangle-props regex=/^_/ \

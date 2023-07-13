@@ -1,6 +1,6 @@
 
 let
-model_load_container = async (path) => {
+model_load_container = async (data) => {
 	/* Parse Retarded Model Format (.rmf):
 		struct {
 			u8 num_frames;
@@ -14,8 +14,7 @@ model_load_container = async (path) => {
 			} indices[num_indices];
 		} rmf_data;
 	*/
-	let data = new Uint8Array(await (await fetch(path)).arrayBuffer()),
-		models = [];
+	let models = [];
 
 	for (let i = 0; i < data.length;) {
 		// let model_size = num_frames * num_verts * 3 + num_indices * 3
